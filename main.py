@@ -19,7 +19,7 @@ s = webuntis.Session(
 
 s.login()
 
-print("TBZ Mitte Untis CLI v0.2a\nby ingressy\n")
+print("TBZ Mitte Untis CLI v0.2b\nby ingressy\n")
 print("use help für Hilfe lol")
 
 while True:
@@ -31,7 +31,7 @@ while True:
         elif cli == "allrooms":
                 for raum in s.rooms():
                         print(raum.name)
-        elif cli == "allteacher":
+        elif cli == "allteachers":
                 choose = input("Kuerzel oder Voller Name\n"
                                 "k | v ~$ ")
                 if choose == "v":
