@@ -1,6 +1,6 @@
 import webuntis, os, helpt, datetime
 from dotenv import load_dotenv
-from prettytable import prettytable, PrettyTable
+from prettytable import PrettyTable
 
 load_dotenv()
 SRV = os.getenv('SRV')
@@ -8,6 +8,7 @@ USR = os.getenv('USR')
 PWD = os.getenv('PWD')
 SHO = os.getenv('SHO')
 USRA = os.getenv('USRA')
+STS = os.getenv('STS')
 
 s = webuntis.Session(
         server=SRV,
@@ -31,6 +32,9 @@ while True:
         elif cli == "allrooms":
                 for raum in s.rooms():
                         print(raum.name)
+        elif cli == "allstudents":
+                for schueler in s.students():
+                        print(schueler.id)
         elif cli == "allteachers":
                 choose = input("Kuerzel, Voller Name oder eine Liste\n"
                                 "k | v | l ~$ ")
@@ -41,20 +45,32 @@ while True:
                         for lehrer in s.teachers():
                                 print(lehrer.name)
                 elif choose == "l":
-                        table = PrettyTable
-                        for lehrer in s.teachers():
-                                table.add_column([0], "Kürzel",[lehrer.name])
-                                table.add_column("Voller Name",[lehrer.full_name])
+                        if STS == "dev":
+                                table = PrettyTable
+                                for lehrer in s.teachers():
+                                        table.add_column([0], "Kürzel",[lehrer.name])
+                                        table.add_column([1],"Voller Name",[lehrer.full_name])
+                        else:
+                                print("Diese Funktion ist noch in der Entwichklung!")
                 else:
                         False
         elif cli == "timetable":
-                today = datetime.date.today()
-                monday = today - datetime.timedelta(days=today.weekday())
-                friday = monday + datetime.timedelta(days=4)
+                if STS == "dev":
+                        today = datetime.date.today()
+                        monday = today - datetime.timedelta(days=today.weekday())
+                        friday = monday + datetime.timedelta(days=4)
 
-                klasse = s.klassen().filter(name="BGT 241")[0]
-                tt = s.timetable(klasse=klasse, start=monday, end=friday)
-                print(tt)
+                        klasse = s.klassen().filter(name="BGT 244")[0]
+                        tt = s.timetable(klasse=klasse, start=monday, end=friday)
+                        print(tt)
+                else:
+                        print("Diese Funktion ist noch in der Entwichklung!")
+        elif cli == "test":
+                if STS == "dev":
+                        for test in s.rooms():
+                                print(test.name)
+                else:
+                        print("Diese Funktion ist noch in der Entwicklung!")
         elif cli == "exit":
                 s.logout()
                 break
