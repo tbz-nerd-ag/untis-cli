@@ -1,7 +1,4 @@
-import datetime
-import helpt
-import os
-import webuntis.objects
+import datetime, prettytable, helpt, os, webuntis.objects
 
 from dotenv import load_dotenv
 from prettytable import PrettyTable
@@ -24,7 +21,7 @@ s = webuntis.Session(
 
 s.login()
 
-print("TBZ Mitte Untis CLI v0.3\nby ingressy\n")
+print("TBZ Mitte Untis CLI v0.3 ||Table Update||\nby ingressy\n")
 
 
 while True:
@@ -59,16 +56,36 @@ while True:
                 else:
                         False
         elif cli == "timetable":
-                if STS == "dev":
-                        today = datetime.date.today()
-                        monday = today - datetime.timedelta(days=today.weekday())
-                        friday = monday + datetime.timedelta(days=4)
+                choose = input("Von welcher Klasse möchtest du den Stundenplan haben? ")
 
-                        klasse = s.klassen().filter(name="BGT 244")[0]
-                        tt = s.timetable(klasse=klasse, start=monday, end=friday)
-                        print(tt)
-                else:
-                        print("Diese Funktion ist noch in der Entwichklung!")
+                today = datetime.date.today()
+                monday = today - datetime.timedelta(days=today.weekday())
+                friday = monday + datetime.timedelta(days=4)
+
+                klasse = s.klassen().filter(name=choose)
+                tt = s.timetable(klasse=klasse[0], start=monday, end=friday)
+                tt = sorted(tt, key=lambda x: x.start)
+                #print(tt)
+
+                time_format_end = "%H:%M"
+                time_format_start = "%Y-%m-%d %a " + time_format_end
+
+                table = PrettyTable()
+                table.field_names = ["Anfang", "Ende", "Klasse", "Lehrer", "Raum", "Fach"]
+
+                for po in tt:
+                        s = po.start.strftime(time_format_start)
+                        e = po.end.strftime(time_format_end)
+                        k = " ".join([k.name for k in po.klassen])
+                        #t = " ".join([t.name for t in po.teachers])
+                        r = " ".join([r.name for r in po.rooms])
+                        sub = " ".join([r.name for r in po.subjects])
+                        c = "(" + po.code + ")" if po.code is not None else ""
+                        # print(s + "-" + e, k, sub, t, r, c)
+
+                        table.add_row([s, e, k, "t", r, sub])
+                print(table)
+
         elif cli == "rooms":
                 choose = input("Von welchen Raum möchtest du den Stundenplan haben? ")
 
@@ -78,8 +95,29 @@ while True:
                 rooms = s.rooms().filter(name=choose)
 
                 tt = s.timetable(room=rooms[0], start=start, end=end)
-                #tt = list(webuntis.objects.PeriodList)
-                print(tt)
+                tt = sorted(tt, key=lambda x: x.start)
+                #print(tt)
+
+                time_format_end = "%H:%M"
+                time_format_start = "%Y-%m-%d %a " + time_format_end
+
+                table = PrettyTable()
+                table.field_names = ["Anfang","Ende", "Klasse", "Lehrer", "Raum", "Fach"]
+
+                for po in tt:
+                       s = po.start.strftime(time_format_start)
+                       e = po.end.strftime(time_format_end)
+                       k = " ".join([k.name for k in po.klassen])
+                       t = " ".join([t.name for t in po.teachers])
+                       r = " ".join([r.name for r in po.rooms])
+                       sub = " ".join([r.name for r in po.subjects])
+                       c = "(" + po.code + ")" if po.code is not None else ""
+                       #print(s + "-" + e, k, sub, t, r, c)
+
+                       table.add_row([s,e, k, t, r, sub])
+                print(table)
+
+
         elif cli == "exit":
                 s.logout()
                 break
