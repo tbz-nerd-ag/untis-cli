@@ -1,4 +1,8 @@
-import webuntis, os, helpt, datetime
+import datetime
+import helpt
+import os
+import webuntis.objects
+
 from dotenv import load_dotenv
 from prettytable import PrettyTable
 
@@ -65,12 +69,17 @@ while True:
                         print(tt)
                 else:
                         print("Diese Funktion ist noch in der Entwichklung!")
-        #elif cli == "test":
-         #       if STS == "dev":
-          #              for test in s.rooms():
-           #                     print(test.name)
-            #    else:
-             #           print("Diese Funktion ist noch in der Entwicklung!")
+        elif cli == "rooms":
+                choose = input("Von welchen Raum möchtest du den Stundenplan haben? ")
+
+                start = datetime.datetime.now()
+                end = start + datetime.timedelta(days=5)
+
+                rooms = s.rooms().filter(name=choose)
+
+                tt = s.timetable(room=rooms[0], start=start, end=end)
+                #tt = list(webuntis.objects.PeriodList)
+                print(tt)
         elif cli == "exit":
                 s.logout()
                 break
