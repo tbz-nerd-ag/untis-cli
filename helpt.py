@@ -10,4 +10,5 @@ def help_text():
     print("allteachers  | Zeigt dir alle Lehrer am TBZ an")
     print("help         | Zeigt diese Informationen an")
     print("rooms        | Zeigt dir den Belegungsplan eines Raumes an")
+    print("timetable    | Zeigt dir einen Stundenplan einer Klasse an")
 
