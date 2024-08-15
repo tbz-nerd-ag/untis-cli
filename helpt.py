@@ -9,8 +9,5 @@ def help_text():
     print("allrooms     | Zeigt dir alle Räume am TBZ an")
     print("allteachers  | Zeigt dir alle Lehrer am TBZ an")
     print("help         | Zeigt diese Informationen an")
-    #if STS == "dev":
-        #print("timetable    | Zeigt einen Unlesbaren Stundenplan an")
-    #else:
-        #print("Bei Problemen und Anregungen, gerne eine Issuse bei Github öffnen.")
+    print("rooms        | Zeigt dir den Belegungsplan eines Raumes an")
 
