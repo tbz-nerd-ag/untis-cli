@@ -65,12 +65,12 @@ while True:
                         print(tt)
                 else:
                         print("Diese Funktion ist noch in der Entwichklung!")
-        elif cli == "test":
-                if STS == "dev":
-                        for test in s.rooms():
-                                print(test.name)
-                else:
-                        print("Diese Funktion ist noch in der Entwicklung!")
+        #elif cli == "test":
+         #       if STS == "dev":
+          #              for test in s.rooms():
+           #                     print(test.name)
+            #    else:
+             #           print("Diese Funktion ist noch in der Entwicklung!")
         elif cli == "exit":
                 s.logout()
                 break
