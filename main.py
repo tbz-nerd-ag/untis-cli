@@ -1,4 +1,4 @@
-import datetime, prettytable, helpt, os, webuntis.objects
+import datetime, helpt, os, webuntis.objects, logging
 
 from dotenv import load_dotenv
 from prettytable import PrettyTable
@@ -128,13 +128,9 @@ while True:
 
                 tt = s.timetable(room=rooms[0], start=start, end=end)
                 tt = sorted(tt, key=lambda x: x.start)
-                # print(tt)
 
-                time_format_end = "%H:%M"
+                time_format_end = "%H%M"
                 time_format_start = "%Y-%m-%d %a " + time_format_end
-
-                #table = PrettyTable()
-                #table.field_names = ["Anfang", "Ende", "Klasse", "Lehrer", "Raum", "Fach"]
 
                 for po in tt:
                         s = po.start.strftime(time_format_start)
@@ -144,12 +140,13 @@ while True:
                         r = " ".join([r.name for r in po.rooms])
                         sub = " ".join([r.name for r in po.subjects])
                         c = "(" + po.code + ")" if po.code is not None else ""
-                        # print(s + "-" + e, k, sub, t, r, c)
-                        print (e)
-                        #if e > choose1:
-                                #print(s + "-" + e, k, sub, t, r, c)
-                        #table.add_row([s, e, k, t, r, sub])
-                #print(table)
+                        #print(s + "-" + e, k, sub, t, r, c)
+
+                        #print (e)
+                        if e < choose1:
+                                print(s + "-" + e, k, sub, t, r, c)
+                        else:
+                           logging.error("Time Error")
         elif cli == "exit":
                 s.logout()
                 break
