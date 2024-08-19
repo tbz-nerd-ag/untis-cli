@@ -1,4 +1,4 @@
-import datetime, prettytable, helpt, os, webuntis.objects
+import datetime, helpt, os, webuntis.objects, random
 
 from dotenv import load_dotenv
 from prettytable import PrettyTable
@@ -21,9 +21,9 @@ s = webuntis.Session(
 
 s.login()
 
-print("TBZ Mitte Untis CLI v0.3 ||Table Update||\nby ingressy\n")
-
-
+print("TBZ Mitte Untis CLI v0.4 \nby ingressy\n")
+ramtext = ["thanks to Monster Energy and Katjes for mental support", "buy me a coffe pls ... i hate this shit", "READY.", "you are hacked", "My unicorn says: reality lies", "i like pancakes"]
+print(random.choice(ramtext))
 while True:
         cli = input("ingressy@untis ~$ ")
 
@@ -65,7 +65,7 @@ while True:
                 klasse = s.klassen().filter(name=choose)
                 tt = s.timetable(klasse=klasse[0], start=monday, end=friday)
                 tt = sorted(tt, key=lambda x: x.start)
-                #print(tt)
+                print(tt)
 
                 time_format_end = "%H:%M"
                 time_format_start = "%Y-%m-%d %a " + time_format_end
@@ -81,9 +81,9 @@ while True:
                         r = " ".join([r.name for r in po.rooms])
                         sub = " ".join([r.name for r in po.subjects])
                         c = "(" + po.code + ")" if po.code is not None else ""
-                        # print(s + "-" + e, k, sub, t, r, c)
+                        #print(s + "-" + e, k, sub, t, r, c)
 
-                        table.add_row([s, e, k, "t", r, sub])
+                        table.add_row([s, e, k, t, r, sub])
                 print(table)
 
         elif cli == "rooms":
@@ -96,7 +96,7 @@ while True:
 
                 tt = s.timetable(room=rooms[0], start=start, end=end)
                 tt = sorted(tt, key=lambda x: x.start)
-                #print(tt)
+                print(tt)
 
                 time_format_end = "%H:%M"
                 time_format_start = "%Y-%m-%d %a " + time_format_end
@@ -116,8 +116,33 @@ while True:
 
                        table.add_row([s,e, k, t, r, sub])
                 print(table)
+        elif cli == "doorsign":
+                choose = input("Von welchen Raum möchtest du den Stundenplan haben? ")
+                chtime = input("Wie spät ist es?")
 
+                start = datetime.datetime.now()
+                end = start + datetime.timedelta(days=5)
 
+                rooms = s.rooms().filter(name=choose)
+
+                tt = s.timetable(room=rooms[0], start=start, end=end)
+                tt = sorted(tt, key=lambda x: x.start)
+                #print(tt)
+
+                time_format_end = "%H%M"
+                time_format_start = "%Y-%m-%d %a " + time_format_end
+
+                for po in tt:
+                       s = po.start.strftime(time_format_start)
+                       e = po.end.strftime(time_format_end)
+                       k = " ".join([k.name for k in po.klassen])
+                       t = " ".join([t.name for t in po.teachers])
+                       r = " ".join([r.name for r in po.rooms])
+                       sub = " ".join([r.name for r in po.subjects])
+                       c = "(" + po.code + ")" if po.code is not None else ""
+
+                       if chtime < e:
+                               print(s + "-" + e, k, sub, t, r, c)
         elif cli == "exit":
                 s.logout()
                 break
