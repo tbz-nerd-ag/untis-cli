@@ -64,52 +64,52 @@ while True:
                                 False
 
         elif cli == "timetable":
-                choose = input("Von welcher Klasse möchtest du den Stundenplan haben? ")
+                choose = input("From which class would you like to have the timetable? ")
 
                 start = datetime.datetime.now()
-                end = start + datetime.timedelta(days=5)
+                end = start + datetime.timedelta(days=4)
 
                 klasse = s.klassen().filter(name=choose)
                 tt = s.timetable(klasse=klasse[0], start=start, end=end)
                 tt = sorted(tt, key=lambda x: x.start)
-                print(tt)
+                #print(tt)
 
                 time_format_end = "%H:%M"
                 time_format_start = "%Y-%m-%d %a " + time_format_end
 
                 table = PrettyTable()
-                table.field_names = ["Anfang", "Ende", "Lehrer", "Raum", "Fach"]
+                table.field_names = ["Start", "End", "Teacher", "Room", "Subject", "News"]
 
                 for po in tt:
                         s = po.start.strftime(time_format_start)
                         e = po.end.strftime(time_format_end)
                         k = " ".join([k.name for k in po.klassen])
-                        t = " ".join([t.name for t in po.teachers])
+                        t = " ".join([t.full_name for t in po.teachers])
                         r = " ".join([r.name for r in po.rooms])
-                        sub = " ".join([r.name for r in po.subjects])
+                        sub = " ".join([r.long_name for r in po.subjects])
                         c = "(" + po.code + ")" if po.code is not None else ""
                         #print(s + "-" + e, k, sub, t, r, c)
 
-                        table.add_row([s, e, t, r, sub])
+                        table.add_row([s, e, t, r, sub, c])
                 print(table)
 
         elif cli == "rooms":
-                choose = input("Von welchen Raum möchtest du den Stundenplan haben? ")
+                choose = input("From which room would you like to have the timetable? ")
 
                 start = datetime.datetime.now()
-                end = start + datetime.timedelta(days=5)
+                end = start + datetime.timedelta(days=4)
 
                 rooms = s.rooms().filter(name=choose)
 
                 tt = s.timetable(room=rooms[0], start=start, end=end)
                 tt = sorted(tt, key=lambda x: x.start)
-                print(tt)
+                #print(tt)
 
                 time_format_end = "%H:%M"
                 time_format_start = "%Y-%m-%d %a " + time_format_end
 
                 table = PrettyTable()
-                table.field_names = ["Anfang","Ende", "Klasse", "Lehrer", "Raum", "Fach"]
+                table.field_names = ["Start","End", "Class", "Teacher", "Room", "Subject", "News"]
 
                 for po in tt:
                        s = po.start.strftime(time_format_start)
@@ -117,18 +117,18 @@ while True:
                        k = " ".join([k.name for k in po.klassen])
                        t = " ".join([t.name for t in po.teachers])
                        r = " ".join([r.name for r in po.rooms])
-                       sub = " ".join([r.name for r in po.subjects])
+                       sub = " ".join([r.long_name for r in po.subjects])
                        c = "(" + po.code + ")" if po.code is not None else ""
                        #print(s + "-" + e, k, sub, t, r, c)
 
-                       table.add_row([s,e, k, t, r, sub])
+                       table.add_row([s,e, k, t, r, sub, c])
                 print(table)
         elif cli == "doorsign":
-                choose = input("Von welchen Raum möchtest du den Stundenplan haben? ")
-                chtime = input("Wie spät ist es? ")
+                choose = input("From which room would you like to have the timetable? ")
+                chtime = input("What time is it? ")
 
                 start = datetime.datetime.now()
-                end = start + datetime.timedelta(days=5)
+                end = start + datetime.timedelta(days=4)
 
                 rooms = s.rooms().filter(name=choose)
 

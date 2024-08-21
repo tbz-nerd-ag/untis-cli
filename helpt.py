@@ -5,10 +5,9 @@ load_dotenv()
 STS = os.getenv('STS')
 
 def help_text():
-    print("allclass     | Zeigt dir alle Klassen am TBZ an")
-    print("allrooms     | Zeigt dir alle Räume am TBZ an")
-    print("allteachers  | Zeigt dir alle Lehrer am TBZ an")
-    print("help         | Zeigt diese Informationen an")
-    print("rooms        | Zeigt dir den Belegungsplan eines Raumes an")
-    print("timetable    | Zeigt dir einen Stundenplan einer Klasse an")
+    print("all          | Gives you a small sub programme with which you can display a lot of information")
+    print("doorsign     | Gives you a table of the current hour")
+    print("help         | Shows you this information")
+    print("rooms        | Shows you the occupancy plan of a room")
+    print("timetable    | Shows you a timetable of a class")
 
